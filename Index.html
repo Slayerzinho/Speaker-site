@@ -1,0 +1,287 @@
+<!DOCTYPE html><html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Speaker — Bot para Discord</title>  <!-- Minimal, single-file dark theme site for a Discord bot presentation -->  <style>
+    :root{
+      --bg:#0b0f14; /* very dark */
+      --panel:#0f1720;
+      --muted:#9aa7b2;
+      --accent:#7c5cff; /* purple */
+      --glass: rgba(255,255,255,0.03);
+      --glass-2: rgba(255,255,255,0.02);
+      --success:#39d98a;
+      --danger:#ff6b6b;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(124,92,255,0.06), transparent 6%),
+                  radial-gradient(900px 400px at 90% 90%, rgba(57,217,138,0.03), transparent 6%),
+                  var(--bg);
+      color:#e6eef7;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.4;
+      padding-bottom:60px;
+    }
+    header{
+      display:flex;align-items:center;justify-content:space-between;padding:22px 28px;gap:16px;
+      position:sticky;top:0;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+      backdrop-filter: blur(6px);
+      z-index:20;
+      border-bottom:1px solid rgba(255,255,255,0.02);
+    }
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{
+      width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#5fd6b8);
+      display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:20px;box-shadow:0 6px 20px rgba(124,92,255,0.12);
+    }
+    nav a{color:var(--muted);text-decoration:none;margin-left:16px;font-weight:600}
+    nav a:hover{color:var(--accent)}
+
+    .container{max-width:1100px;margin:28px auto;padding:0 20px}
+
+    .hero{
+      display:grid;grid-template-columns:1fr 420px;gap:28px;align-items:center;margin-top:6px
+    }
+    .card{background:linear-gradient(180deg,var(--glass),var(--glass-2));border-radius:14px;padding:22px;border:1px solid rgba(255,255,255,0.02)}
+
+    .hero-left h1{font-size:32px;margin:0 0 6px}
+    .subtitle{color:var(--muted);margin-bottom:16px}
+    .cta-row{display:flex;gap:12px;align-items:center}
+    .btn{padding:10px 14px;border-radius:10px;border:none;font-weight:700;cursor:pointer}
+    .btn-primary{background:linear-gradient(90deg,var(--accent),#5fd6b8);color:#071226;}
+    .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted)}
+
+    .stats{display:flex;gap:12px;margin-top:14px}
+    .stat{padding:10px 12px;border-radius:10px;background:rgba(0,0,0,0.25);min-width:110px;text-align:center}
+    .stat b{display:block;font-size:18px}
+
+    .commands{margin-top:20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+    .cmd{padding:12px;border-radius:10px;background:linear-gradient(180deg,rgba(255,255,255,0.01),transparent);border:1px solid rgba(255,255,255,0.02)}
+    .cmd h4{margin:0 0 6px}
+    .cmd p{margin:0;color:var(--muted);font-size:14px}
+
+    /* right column */
+    .card-right{display:flex;flex-direction:column;gap:12px}
+    .mini{display:flex;justify-content:space-between;align-items:center;padding:12px;border-radius:10px;background:rgba(0,0,0,0.25)}
+
+    footer{max-width:1100px;margin:28px auto 80px;padding:16px 20px;color:var(--muted)}
+
+    /* responsive */
+    @media (max-width:880px){
+      .hero{grid-template-columns:1fr;}
+      .card-right{order:2}
+    }
+
+    /* small utility */
+    .muted{color:var(--muted)}
+    a.link{color:var(--accent);text-decoration:none;font-weight:700}
+    .invite{display:inline-flex;gap:10px;align-items:center}
+    .topgg{display:inline-flex;gap:8px;align-items:center}
+
+    .badge{font-size:12px;padding:6px 8px;border-radius:999px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.02)}
+
+    .search {
+      display:flex;gap:8px;margin-top:12px
+    }
+    .search input{flex:1;padding:10px;border-radius:10px;border:none;background:rgba(255,255,255,0.02);color:inherit}
+
+  </style></head>
+<body>
+  <header>
+    <div class="brand">
+      <div class="logo">Sp</div>
+      <div>
+        <div style="font-weight:800">Speaker</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:2px">Bot de voz, moderação e utilitários para Discord</div>
+      </div>
+    </div><nav>
+  <a href="#comandos">Comandos</a>
+  <a href="#servidores">Servidores</a>
+  <a href="#suporte">Suporte</a>
+</nav>
+
+  </header>  <main class="container">
+    <section class="hero">
+      <div class="hero-left">
+        <div class="card">
+          <h1>Speaker — leve sua comunidade ao próximo nível</h1>
+          <p class="subtitle">Comandos de voz, moderação inteligente e ferramentas para criação de conteúdo no seu servidor. Rápido, confiável e fácil de usar.</p><div class="cta-row">
+        <!-- Replace CLIENT_ID and PERMISSIONS with your bot's info -->
+        <a id="inviteLink" class="invite" href="#" target="_blank"><button class="btn btn-primary">Convidar Speaker</button></a>
+        <a id="topggLink" class="topgg" href="#" target="_blank"><button class="btn btn-ghost">Ver no top.gg</button></a>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><b id="serversCount">—</b><span class="muted">Servidores</span></div>
+        <div class="stat"><b id="usersCount">—</b><span class="muted">Usuários</span></div>
+        <div class="stat"><b>PT-BR</b><span class="muted">Idioma</span></div>
+      </div>
+
+      <div class="commands" id="comandos">
+        <!-- default command set; edit later -->
+        <div class="cmd"><h4>/play &nbsp; <span class="muted">(voz)</span></h4><p>Toca música a partir de URL ou busca.</p></div>
+        <div class="cmd"><h4>/stop &nbsp; <span class="muted">(voz)</span></h4><p>Para a reprodução e limpa a fila.</p></div>
+        <div class="cmd"><h4>/ban &nbsp; <span class="muted">(mod)</span></h4><p>Bane um usuário do servidor.</p></div>
+        <div class="cmd"><h4>/mute &nbsp; <span class="muted">(mod)</span></h4><p>Silencia temporariamente um membro.</p></div>
+        <div class="cmd"><h4>/setup &nbsp; <span class="muted">(config)</span></h4><p>Roda a configuração inicial do bot no servidor.</p></div>
+        <div class="cmd"><h4>/help &nbsp; <span class="muted">(info)</span></h4><p>Mostra a lista completa de comandos e como usar.</p></div>
+      </div>
+
+    </div>
+
+    <div style="height:14px"></div>
+
+    <div class="card">
+      <h3>Sobre o Speaker</h3>
+      <p class="muted">Speaker foi criado para servidores que querem uma experiência de voz e moderação profissional, com baixo consumo de recursos e integração fácil com canais de texto e voz.</p>
+      <div style="height:12px"></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <span class="badge">Voz</span>
+        <span class="badge">Moderação</span>
+        <span class="badge">Musica</span>
+        <span class="badge">Painel</span>
+      </div>
+    </div>
+
+  </div>
+
+  <aside class="card-right">
+    <div class="card">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="width:56px;height:56px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#5fd6b8);display:flex;align-items:center;justify-content:center;font-weight:700;color:#071226">Sp</div>
+        <div>
+          <div style="font-weight:800">Speaker</div>
+          <div class="muted" style="font-size:13px">Prefix: / (Slash commands)</div>
+        </div>
+      </div>
+
+      <div style="height:12px"></div>
+
+      <div class="mini">
+        <div>
+          <div class="muted">Status</div>
+          <div style="font-weight:800;display:flex;gap:8px;align-items:center"><span id="botStatus">—</span></div>
+        </div>
+        <div style="text-align:right">
+          <div class="muted">Versão</div>
+          <div style="font-weight:800">v1.0.0</div>
+        </div>
+      </div>
+
+      <div style="height:10px"></div>
+
+      <div class="mini">
+        <div>
+          <div class="muted">Servidor oficial</div>
+          <a id="supportLink" class="link" href="#" target="_blank">Entrar no servidor</a>
+        </div>
+        <div>
+          <div class="muted">Top.gg</div>
+          <a id="topLinkSmall" class="link" href="#" target="_blank">Página do bot</a>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="card">
+      <h4>Procurando um comando?</h4>
+      <div class="search">
+        <input id="cmdSearch" placeholder="Buscar comando (ex: play, ban)" />
+        <button id="searchBtn" class="btn btn-ghost">Buscar</button>
+      </div>
+      <p class="muted" style="margin-top:10px;font-size:13px">Digite um nome de comando para filtrar a lista.</p>
+    </div>
+
+  </aside>
+</section>
+
+<section id="servidores" style="margin-top:20px">
+  <div class="card">
+    <h3>Servidores oficiais e parceiros</h3>
+    <p class="muted">Aqui você pode colocar banners ou cards dos servidores oficiais, parceiros e comunidades que usam o Speaker.</p>
+    <div style="height:12px"></div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap">
+      <div class="badge">Servidor Oficial</div>
+      <div class="badge">Parceiro A</div>
+      <div class="badge">Comunidade X</div>
+    </div>
+  </div>
+</section>
+
+<section id="suporte" style="margin-top:18px">
+  <div class="card">
+    <h3>Suporte</h3>
+    <p class="muted">Se você precisa de ajuda, entre no servidor oficial ou abra um ticket por lá. Para reportar bugs, poste no canal <code>#bugs</code> com informações e passos para reproduzir.</p>
+    <div style="height:12px"></div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap">
+      <a id="inviteFooter" href="#" target="_blank" class="btn btn-primary">Convidar Speaker</a>
+      <a id="supportFooter" href="#" target="_blank" class="btn btn-ghost">Entrar no servidor</a>
+    </div>
+  </div>
+</section>
+
+  </main>  <footer>
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+      <div>
+        <strong>Speaker</strong> — Bot para Discord • Feito por Você
+      </div>
+      <div class="muted">Links: <a class="link" href="#">GitHub</a> • <a class="link" href="#">Docs</a></div>
+    </div>
+  </footer>  <script>
+    // === CONFIGURE AQUI: substitua pelos seus links reais ===
+    const CONFIG = {
+      CLIENT_ID: 'SEU_CLIENT_ID_AQUI',
+      PERMISSIONS: '8', // ou as permissões desejadas (números)
+      REDIRECT_URI: '',
+      TOPGG: 'https://top.gg/bot/SEU_BOT_ID',
+      SUPPORT_SERVER: 'https://discord.gg/SEU_INVITE',
+    };
+
+    // set links
+    const inviteUrl = `https://discord.com/oauth2/authorize?client_id=${CONFIG.CLIENT_ID}&permissions=${CONFIG.PERMISSIONS}&scope=bot%20applications.commands`;
+    document.getElementById('inviteLink').href = inviteUrl;
+    document.getElementById('inviteFooter').href = inviteUrl;
+
+    document.getElementById('topggLink').href = CONFIG.TOPGG;
+    document.getElementById('topLinkSmall').href = CONFIG.TOPGG;
+
+    document.getElementById('supportLink').href = CONFIG.SUPPORT_SERVER;
+    document.getElementById('supportFooter').href = CONFIG.SUPPORT_SERVER;
+
+    // Fake stats example — se tiver uma API, substitua por fetch
+    function fetchStats(){
+      // exemplo: fetch('/api/stats').then(...)
+      // por enquanto, mostra valores fictícios
+      const stats = {servers: 342, users: 12500, status: 'Online'};
+      document.getElementById('serversCount').innerText = stats.servers.toLocaleString('pt-BR');
+      document.getElementById('usersCount').innerText = stats.users.toLocaleString('pt-BR');
+      document.getElementById('botStatus').innerText = stats.status;
+    }
+
+    fetchStats();
+
+    // comando de busca simples
+    const commands = Array.from(document.querySelectorAll('.cmd'));
+    function filterCommands(term){
+      const t = term.trim().toLowerCase();
+      commands.forEach(c=>{
+        const text = c.textContent.toLowerCase();
+        c.style.display = text.includes(t) ? 'block' : 'none';
+      });
+    }
+
+    document.getElementById('searchBtn').addEventListener('click', ()=>{
+      filterCommands(document.getElementById('cmdSearch').value);
+    });
+    document.getElementById('cmdSearch').addEventListener('keydown', (e)=>{ if(e.key === 'Enter') filterCommands(e.target.value); });
+
+    // small UX: open external links in new tab
+    document.querySelectorAll('a[target="_blank"]').forEach(a=>a.rel='noopener noreferrer');
+
+  </script></body>
+</html>
